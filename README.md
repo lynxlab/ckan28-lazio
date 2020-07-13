@@ -36,7 +36,7 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
     pip install -r requirements.txt
     ```
 
-    Se ci fossero problemi nella compilazione del modulo wsgi per apache probabilmente python non è configurato per supportare le libreire condivise, fare rieferimento alla sezione Note di questo file per possibili aiuti.
+    Se ci fossero problemi nella compilazione del modulo wsgi per apache probabilmente python non è configurato per supportare le libreire condivise; fare riferimento alla sezione Note di questo file per possibili aiuti.
     Potrebbe essere necessario installare il pacchetto ```httpd-devel``` (yum install httpd-devel)
 
 3. Configurare il file ```etc/production.ini``` facendo massima attenzione alle credenziali di accesso ai DB, a tutte le url coinvolte (solr, redis, etc...) ed alle directory di filesystem necessarie (storage_path, files *.ini, etc...).
@@ -79,7 +79,7 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 
     Modifcare il file ```/opt/opendata/ckan/ckan28-lazio/ckan28/etc/ckan28.wsgi``` scrivendo a riga 3 il path assoulto in uso.
 
-    Commentare l'unica riga presente ed aggiunre ```LoadModule wsgi_module /opt/opendata/ckan/ckan28-lazio/ckan28/lib/python2.7/site-packages/mod_wsgi/server/mod_wsgi-py27.so``` al file  ```/etc/httpd/conf.d/wsgi.conf```.
+    Commentare l'unica riga presente ed aggiungere ```LoadModule wsgi_module /opt/opendata/ckan/ckan28-lazio/ckan28/lib/python2.7/site-packages/mod_wsgi/server/mod_wsgi-py27.so``` al file  ```/etc/httpd/conf.d/wsgi.conf```.
 
     _Nota_: La posizione del file e/o la direttiva LoadModule wsgi_module potrebbero variare dipendentemente dall'installazione di apache.
 
