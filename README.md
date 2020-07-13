@@ -161,6 +161,14 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
     python dbrepair_script.py map-themes commit
     ```
 
+14. Ottenere lo script sql per settare i permessi e creare procedure necessarie al datapusher
+
+    ```
+    paster --plugin=ckan datastore set-permissions -c ../../etc/production.ini > datastore-permissions.sql
+    ```
+
+    Trasmettere il file ```datastore-permissions.sql``` al DBA con la richiesta di farlo girare nel database del datastore, con permessi di superutente postgres.
+
 ## Installazione/configurazione datapusher
 
 1. Disattivare il virtualenvironment ckan28, crearne uno per il datapusher ed attivarlo
