@@ -14,20 +14,15 @@
 
 Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che abbia come gruppo primario ``ckan`` ed home directory ``/opt/opendata/ckan``. Se necessario fare riferimento all'utente e directory prescelta al momento dell'installazione.
 
- 1. Creare una direcotry per l'installazione ed il virtual environment python
+1. Clonare il repository ,creare il virtual environment python, attivarlo ed aggiornarlo
+
+    Fare login come utente ```ckan```
 
     ```
     cd
-    mkdir ckan28
-    cd ckan28
-    ```
-
-2. Clonare il repository ,creare il virtual environment python, attivarlo ed aggiornarlo
-
-    ```
     git clone https://github.com/lynxlab/ckan28-lazio.git
     virtualenv --no-site-packages /opt/opendata/ckan/ckan28-lazio/ckan28
-    cd ckan28
+    cd ckan28-lazio/ckan28
     . bin/activate
     pip install --upgrade pip
     pip install --upgrade setuptools wheel
@@ -35,7 +30,7 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 
     **ATTENZIONE**: da questo punto in poi, per tutti i comandi di tipo pip, paster, python si assume che il virtual environment ckan28 sia stato attivato.
 
-3. Installare e compilare i sorgenti ckan
+2. Installare e compilare i sorgenti ckan
 
     ```
     pip install -r requirements.txt
@@ -44,7 +39,10 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
     Se ci fossero problemi nella compilazione del modulo wsgi per apache probabilmente python non è configurato per supportare le libreire condivise, fare rieferimento alla sezione Note di questo file per possibili aiuti.
     Potrebbe essere necessario installare il pacchetto ```httpd-devel``` (yum install httpd-devel)
 
-4. Configurare il file ```etc/production.ini``` facendo massima attenzione alle credenziali di accesso ai DB, a tutte le url coinvolte (solr, redis, etc...) ed alle directory di filesystem necessarie (storage_path, files *.ini, etc...).
+3. Configurare il file ```etc/production.ini``` facendo massima attenzione alle credenziali di accesso ai DB, a tutte le url coinvolte (solr, redis, etc...) ed alle directory di filesystem necessarie (storage_path, files *.ini, etc...).
+
+
+4. Controllare e sistemare i permessi della directory dello storage (ckan.storage_path) e della cache (cache_dir) in modo che sia leggibile e scrivibile dall'utente di sistema ```ckan``` e/o dal gruppo di sistema ```ckan```
 
 5. Se necessario, creare un nuovo core di solr oppure usare quello esistente, in ogni caso copiare i files ```solr-config/solrconfig.xml``` e ```solr-config/schema.xml``` nella directory di configurazione del core di solr, da cui è necessario anche rinominare il file ```managed-schema``` in un nome a piacere, ad esempio ```managed-schema.disabled```
 
@@ -77,7 +75,7 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 
     Decommentare i plugin commentati in precedenza.
 
-10. Configurare apache per usare il modulo wsgi compilato al punto 3 ed il virtualhost per ckan
+10. Configurare apache per usare il modulo wsgi compilato al punto 3 ed il virtualhost per ckan (necessario utente root)
 
     Modifcare il file ```/opt/opendata/ckan/ckan28-lazio/ckan28/etc/ckan28.wsgi``` scrivendo a riga 3 il path assoulto in uso.
 
@@ -95,10 +93,14 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 
     ```
     WSGIDaemonProcess ckan_produzione display-name=ckan_produzione processes=2 threads=15 user=ckan group=ckan
+    WSGIProcessGroup ckan_produzione
+
     ```
 
     _Nota_: Fare attenzione ad usare i percorsi di file e nome/utente gruppo corretti.
     La posizione del file e/o le configurazioni WSGIScriptAlias, WSGIDaemonProcess potrebbero variare dipendentemente dall'installazione di apache.
+
+    **ATTENZIONE**: Se è in uso il sistema Selinux, disattivarlo oppure configurarlo opportunamente.
 
     Riavviare di apache.
 
@@ -118,6 +120,8 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 |turismo-sport | Turismo, sport e tempo libero|
 |formazione-lavoro | Formazione e lavoro|
 |pubblica-amministrazione | Istituzioni e politica|
+
+**ATTENZIONE** In questa fase è necessario caricare le icone dei gruppi man mano che si creano.
 
 12. Creazione e popolazione tabelle plugin dcatapit
 
@@ -146,7 +150,7 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 13. Far girare lo script lynx che relizza le mappature categoria => tema e gruppo
 
     ```
-    cd /opt/opendata/ckan/ckan28-lazio/scritps
+    cd /opt/opendata/ckan/ckan28-lazio/scripts
     ```
 
     configurare lo script modificando il file ```conf.ini``` con le informazioni necessarie
@@ -164,10 +168,12 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 14. Ottenere lo script sql per settare i permessi e creare procedure necessarie al datapusher
 
     ```
-    paster --plugin=ckan datastore set-permissions -c ../../etc/production.ini > datastore-permissions.sql
+    cd /opt/opendata/ckan/ckan28-lazio/ckan28
+    paster --plugin=ckan datastore set-permissions -c etc/production.ini > datastore-permissions.sql
     ```
 
     Trasmettere il file ```datastore-permissions.sql``` al DBA con la richiesta di farlo girare nel database del datastore, con permessi di superutente postgres.
+
 
 ## Installazione/configurazione datapusher
 
@@ -177,7 +183,7 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
     cd
     deactivate
     virtualenv --no-site-packages /opt/opendata/ckan/ckan28-lazio/datapusher
-    cd datapusher
+    cd ckan28-lazio/datapusher
     . bin/activate
     pip install --upgrade pip
     pip install --upgrade setuptools wheel
@@ -208,6 +214,8 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 
     _Nota_: Fare attenzione ad usare i percorsi di file e nome/utente gruppo corretti.
     La posizione del file e/o le configurazioni WSGIScriptAlias, WSGIDaemonProcess potrebbero variare dipendentemente dall'installazione di apache.
+
+    **ATTENZIONE**: Controllare e sistemare i permessi della directory e dei file in uso al datapusher (```/tmp/ckan_service.log``` e ```/tmp/job_store.db```, i file possono essere cancellati e verrano ricreati)
 
     Riavviare di apache.
 
@@ -252,8 +260,9 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 
     ```
 
-5. Decommentare i plugin commentati in precedenza.
+5. **Decommentare i plugin commentati in precedenza.**
 
+6. Riavviare apache
 
 ### Note
 
