@@ -20,6 +20,7 @@ ckanext-geoview==0.0.16
 -e git+https://github.com/alantygel/ckanext-tagmanager.git@1370a0ebca54503efa52510b6b15e93f267ecee5#egg=ckanext_tagmanager
 -e git+https://github.com/ckan/ckantoolkit.git@d3c994293405119ea95ae25d65978f4dfe3895a8#egg=ckantoolkit
 click==6.7
+configparser==4.0.2
 coverage==5.1
 coveralls==1.11.1
 cryptography==2.9.2
