@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import psycopg2
 from psycopg2 import sql
 from config import config
@@ -7,15 +10,66 @@ import sys
 
 jobs_to_run = sys.argv[1:]
 
-category_theme_dict = {'agricoltura-pesca': 'AGRI', 'cultura': 'EDUC', 'ambiente-meteo': 'ENVI',
-                       'attivita-produttive': 'ECON', 'bilanci-pagamenti': 'ECON', 'mobilita-transporti': 'TRAN',
-                       'politiche-sociali-giovanili': 'SOCI', 'sanita': 'HEAL', 'territorio-urbanistica': 'REGI',
+category_theme_dict = {'agricoltura-pesca': 'AGRI',
+                       'cultura': 'EDUC',
+                       'ambiente-meteo': 'ENVI',
+                       'attivita-produttive': 'ECON',
+                       'bilanci-pagamenti': 'ECON',
+                       'mobilita-transporti': 'TRAN',
+                       'politiche-sociali-giovanili': 'SOCI',
+                       'sanita': 'HEAL',
+                       'territorio-urbanistica': 'REGI',
                        'turismo-sport':'EDUC',
-                       'lavoro': 'SOCI', 'formazione': 'SOCI',
-                       'istituzioni-politica': 'SOCI', 'istruzione-ricerca': 'SOCI', 'bandi-concorso': 'SOCI',
-                       'tasse-tributi': 'ECON', 'opere-pubbliche': 'ECON', 'finanziamenti-pubblici': 'ECON',
-                       'beni-gestione': 'ECON', 'normativa-atti': 'GOVE'}
-
+                       'lavoro': 'SOCI',
+                       'formazione': 'SOCI',
+                       'istituzioni-politica': 'SOCI',
+                       'istruzione-ricerca': 'SOCI',
+                       'bandi-concorsi': 'SOCI',
+                       'tasse-tributi': 'ECON',
+                       'opere-pubbliche': 'ECON',
+                       'finanziamenti-pubblici': 'ECON',
+                       'beni-gestione': 'ECON',
+                       'normativa-atti': 'GOVE'}
+category_name_dict = {'agricoltura-pesca': 'Agricoltura e pesca',
+                      'cultura': 'Cultura',
+                      'ambiente-meteo': 'Ambiente e meteo',
+                      'attivita-produttive': 'Attività produttive',
+                      'bilanci-pagamenti': 'Bilanci e pagamenti',
+                      'mobilita-transporti': 'Mobilità e transporti',
+                      'politiche-sociali-giovanili': 'Politiche sociali e giovanili',
+                      'sanita': 'Sanità',
+                      'territorio-urbanistica': 'Territorio e urbanistica',
+                      'turismo-sport': 'Turismo, sport e tempo libero',
+                      'lavoro': 'Lavoro',
+                      'formazione': 'Formazione',
+                      'istituzioni-politica': 'Istituzioni e politica',
+                      'istruzione-ricerca': 'Istruzione, ricerca e diritto allo studio',
+                      'bandi-concorsi': 'Bandi e concorsi',
+                      'tasse-tributi': 'Tasse e tributi',
+                      'opere-pubbliche': 'Opere pubbliche',
+                      'finanziamenti-pubblici': 'Finanziamenti pubblici',
+                      'beni-gestione': 'Beni immobili e gestione del patrimonio',
+                      'normativa-atti': 'Normativa e atti'}
+category_group_dict = {'agricoltura-pesca': 'Agricoltura e pesca',
+                       'cultura': 'Cultura',
+                       'ambiente-meteo': 'Ambiente',
+                       'attivita-produttive': 'Attività produttive',
+                       'bilanci-pagamenti': 'Finanze',
+                       'mobilita-transporti': 'Mobilità e infrastrutture ',
+                       'politiche-sociali-giovanili': 'Politiche sociali e giovanili',
+                       'sanita': 'Sanità',
+                       'territorio-urbanistica': 'Territorio',
+                       'turismo-sport':'Turismo, sport e tempo libero',
+                       'lavoro': 'Formazione e lavoro',
+                       'formazione': 'Formazione e lavoro',
+                       'istituzioni-politica': 'Formazione e lavoro',
+                       'istruzione-ricerca': 'Formazione e lavoro',
+                       'bandi-concorsi': 'Politiche sociali e giovanili',
+                       'tasse-tributi': 'Finanze',
+                       'opere-pubbliche': 'Finanze',
+                       'finanziamenti-pubblici': 'Finanze',
+                       'beni-gestione': 'Finanze',
+                       'normativa-atti': 'Istituzioni e politica'}
 
 
 query_dict = {'dcatapit_license_old': """insert into dcatapit_license_old
@@ -72,6 +126,7 @@ package_id_pos = 1
 revision_id_pos = 4
 state_id_pos = 5
 
+
 def execute_jobs2(cursor):
     failed_member_insertions = []
     failed_extra_updates = []
@@ -84,23 +139,21 @@ def execute_jobs2(cursor):
         group_list = cursor.fetchall()
     except psycopg2.ProgrammingError as e:
         raise RuntimeError('Cannot get group_list from DB: {}'.format(str(e)))
-    category_group_dict = {}
-    category_name_dict = {}
+    group_id_dict = {}
     for group_el in group_list:
-        category_group_dict[group_el[2]] = group_el[0]
-        category_name_dict[group_el[2]] = group_el[1]
-    print 'category_id_dict'
-    print category_group_dict
+        group_id_dict[group_el[2]] = group_el[0]
+    print 'group_id_dict'
+    print group_id_dict
     print 'category_name_dict'
     print category_name_dict
     print 'group_list'
     print group_list
-    for cat, cat_id in category_group_dict.items():
+    for cat_id, cat in category_name_dict.items():
         print "cat:"
         print cat
         # query in table 'package_extra' all rows where key='category' and value=cat
         query = """select * from package_extra where key=%s and value=%s"""
-        cursor.execute(query, ("category_id", str(category_name_dict[cat])))
+        cursor.execute(query, ("category_id", str(cat_id)))
         try:
             package_extra_cat = cursor.fetchall()
         except psycopg2.ProgrammingError:
@@ -110,7 +163,7 @@ def execute_jobs2(cursor):
         for pkg_x in package_extra_cat:
             # check if exists in table 'member' a row where table_id=package_id and group_id=cat_id
             query = """select * from member where table_id=%s and group_id=%s and state=%s"""
-            cursor.execute(query, (pkg_x[package_id_pos], cat_id, "active"))
+            cursor.execute(query, (pkg_x[package_id_pos], group_id_dict[category_group_dict[cat_id]], "active"))
             member_rows = cursor.fetchall()
             if len(member_rows) == 0:
 
@@ -118,7 +171,9 @@ def execute_jobs2(cursor):
                 print 'inserting member'
                 query = """insert into member(id, table_id, group_id, state, revision_id, table_name, capacity) 
                            values (%s, %s, %s, %s, %s, %s, %s);"""
-                member_to_insert = (str(uuid.uuid4()), pkg_x[package_id_pos], cat_id, pkg_x[state_id_pos], pkg_x[revision_id_pos],
+                member_to_insert = (str(uuid.uuid4()), pkg_x[package_id_pos],
+                                    group_id_dict[category_group_dict[cat_id]],
+                                    pkg_x[state_id_pos], pkg_x[revision_id_pos],
                                     'package', 'public')
                 print member_to_insert
                 try:
@@ -142,7 +197,7 @@ def execute_jobs2(cursor):
             query = """insert into package_extra(id, package_id, key, value, revision_id, state) 
                                        values (%s, %s, %s, %s, %s, %s);"""
             extra_to_insert = (str(uuid.uuid4()), pkg_x[1], "theme",
-                               json.dumps([{'subthemes': [], 'theme': category_theme_dict[category_name_dict[cat]]}]),
+                               json.dumps([{'subthemes': [], 'theme': category_theme_dict[cat_id]}]),
                                pkg_x[4], pkg_x[5])
             print 'inserting extra'
             print extra_to_insert
@@ -166,16 +221,14 @@ def execute_jobs(cursor):
         group_list = cursor.fetchall()
     except psycopg2.ProgrammingError as e:
         raise RuntimeError('Cannot get group_list from DB: {}'.format(str(e)))
-    category_id_dict = {}
-    category_name_dict = {}
+    group_id_dict = {}
     for group_el in group_list:
-        category_id_dict[group_el[2]] = group_el[0]
-        category_name_dict[group_el[2]] = group_el[1]
-    print 'category_id_dict'
-    print category_id_dict
+        group_id_dict[group_el[2]] = group_el[0]
+    print 'group_id_dict'
+    print group_id_dict
     print 'group_list'
     print group_list
-    for cat, cat_id in category_id_dict.items():
+    for cat_id, cat in category_name_dict.items():
         print "cat:"
         print cat
         # query in table 'package_extra' all rows where key='category' and value=cat
@@ -189,15 +242,16 @@ def execute_jobs(cursor):
         for pkg_x in package_extra_cat:
             # check if exists in table 'member' a row where table_id=package_id and group_id=cat_id
             query = """select * from member where table_id=%s and group_id=%s and state=%s"""
-            cursor.execute(query, (pkg_x[package_id_pos], cat_id, "active"))
+            cursor.execute(query, (pkg_x[package_id_pos], group_id_dict[category_group_dict[cat_id]], "active"))
             member_rows = cursor.fetchall()
             if len(member_rows) == 0:
-
                 # if does not exists create and add to 'member'
                 print 'inserting member'
                 query = """insert into member(id, table_id, group_id, state, revision_id, table_name, capacity) 
                            values (%s, %s, %s, %s, %s, %s, %s);"""
-                member_to_insert = (str(uuid.uuid4()), pkg_x[package_id_pos], cat_id, pkg_x[state_id_pos], pkg_x[revision_id_pos],
+                member_to_insert = (str(uuid.uuid4()), pkg_x[package_id_pos],
+                                    group_id_dict[category_group_dict[cat_id]],
+                                    pkg_x[state_id_pos], pkg_x[revision_id_pos],
                                     'package', 'public')
                 print member_to_insert
                 try:
@@ -211,7 +265,7 @@ def execute_jobs(cursor):
             query = """insert into package_extra(id, package_id, key, value, revision_id, state) 
                                        values (%s, %s, %s, %s, %s, %s);"""
             extra_to_insert = (str(uuid.uuid4()), pkg_x[1], "theme",
-                               json.dumps([{'subthemes': [], 'theme': category_theme_dict[category_name_dict[cat]]}]),
+                               json.dumps([{'subthemes': [], 'theme': category_theme_dict[cat_id]}]),
                                pkg_x[4], pkg_x[5])
             print 'inserting extra'
             print extra_to_insert
