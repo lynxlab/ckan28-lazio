@@ -1,0 +1,125 @@
+alabaster==0.7.12
+Babel==2.3.4
+Beaker==1.9.0
+beautifulsoup4==4.5.1
+bleach==2.1.3
+blinker==1.4
+certifi==2020.4.5.1
+cffi==1.14.0
+chardet==3.0.4
+-e git+https://github.com/lynxlab/ckan@ckan-2.8.4.2#egg=ckan
+-e git+https://github.com/ckan/ckanapi.git@2de7166420d46e2f37d5258092ad846f46870c8f#egg=ckanapi
+-e git+https://github.com/ckan/ckanext-dcat.git@b693bc911578cfc28e80c871d8e8eddb07411cfc#egg=ckanext_dcat
+-e git+https://github.com/italia/ckanext-dcatapit.git@d96f2cd1fd6f70086855068586f63d3ae19be420#egg=ckanext_dcatapit
+ckanext-geoview==0.0.16
+-e git+https://github.com/ckan/ckanext-harvest.git@6d286eb8fd6ea3a136f0f3293b29efd5b4fbc025#egg=ckanext_harvest
+-e git+https://github.com/lynxlab/ckanext-lait.git@v0.1.3#egg=ckanext_lait
+-e git+https://github.com/italia/ckanext-multilang.git@54ce60cff1ca955bedd0573a2d1baae40594250c#egg=ckanext_multilang
+-e git+https://github.com/ckan/ckanext-pdfview.git@27f2b107ab9b5ecd4f108c2ba0ce817e8509b81b#egg=ckanext_pdfview
+-e git+https://github.com/ckan/ckanext-spatial.git@4ac25f19aa4eb9c798451f5eeb3084f907ccc003#egg=ckanext_spatial
+-e git+https://github.com/alantygel/ckanext-tagmanager.git@1370a0ebca54503efa52510b6b15e93f267ecee5#egg=ckanext_tagmanager
+-e git+https://github.com/ckan/ckantoolkit.git@d3c994293405119ea95ae25d65978f4dfe3895a8#egg=ckantoolkit
+click==6.7
+coverage==5.1
+coveralls==1.11.1
+cryptography==2.9.2
+decorator==4.2.1
+docopt==0.6.2
+docutils==0.12
+enum34==1.1.10
+extras==1.0.0
+factory-boy==2.1.1
+fanstatic==0.12
+first==2.0.2
+fixtures==3.0.0
+Flask==0.12.4
+Flask-Babel==0.11.2
+Flask-DebugToolbar==0.10.1
+FormEncode==1.3.1
+funcsigs==1.0.2
+future==0.18.2
+GeoAlchemy==0.7.2
+GeoAlchemy2==0.5.0
+geomet==0.2.1.post1
+html5lib==1.0.1
+httpretty==0.8.3
+idna==2.7
+imagesize==1.2.0
+ipaddress==1.0.23
+isodate==0.6.0
+itsdangerous==0.24
+Jinja2==2.8
+linecache2==1.0.0
+lxml==4.5.0
+Mako==1.0.7
+Markdown==2.6.7
+MarkupSafe==1.0
+mock==2.0.0
+mod-wsgi==4.7.1
+mox3==0.28.0
+nose==1.3.7
+ofs==0.4.2
+OWSLib==0.8.6
+packaging==20.3
+Pairtree===0.7.1-T
+passlib==1.6.5
+Paste==1.7.5.1
+PasteDeploy==1.5.2
+PasteScript==2.0.2
+pbr==1.10.0
+pika==1.1.0
+pip-tools==1.7.0
+polib==1.0.7
+psycopg2==2.7.3.2
+pycodestyle==2.2.0
+pycparser==2.20
+pyfakefs==2.9
+Pygments==2.2.0
+Pylons==0.9.7
+pyOpenSSL==18.0.0
+pyparsing==2.4.7
+pysolr==3.6.0
+python-dateutil==1.5
+python-Levenshtein==0.12.0
+python-magic==0.4.15
+python-mimeparse==1.6.0
+python-slugify==4.0.0
+pytz==2016.7
+pyutilib.component.core==4.6.4
+rdflib==4.2.1
+rdflib-jsonld==0.4.0
+redis==3.5.0
+repoze.lru==0.7
+repoze.who==2.3
+repoze.who-friendlyform==1.0.8
+requests==2.20.0
+Routes==1.13
+rq==0.6.0
+Shapely==1.7.0
+simplejson==3.10.0
+six==1.14.0
+snowballstemmer==2.0.0
+SPARQLWrapper==1.8.5
+Sphinx==1.7.1
+sphinx-rtd-theme==0.3.1
+sphinxcontrib-websupport==1.1.2
+SQLAlchemy==1.1.11
+sqlalchemy-migrate==0.10.0
+sqlparse==0.2.2
+Tempita==0.5.2
+testtools==2.4.0
+text-unidecode==1.3
+traceback2==1.4.0
+typing==3.7.4.1
+tzlocal==1.3
+unicodecsv==0.14.1
+unittest2==1.1.0
+urllib3==1.24.3
+vdm==0.14
+webencodings==0.5.1
+WebError==0.13.1
+WebHelpers==1.3
+WebOb==1.0.8
+WebTest==1.4.3
+Werkzeug==0.14.1
+zope.interface==4.3.2
