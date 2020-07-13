@@ -6,7 +6,7 @@
  2. git (almeno v1.7.1)
  3. Apache (almeno v2.2.15)
  4. Tool RedHat per sviluppatori (yum install "Development Tools" o equivalente)
- 5. Accesso un server PostgreSQL, con inidirizzo IP e 2 utenze, una per il db ckan e l'altra per il datastore
+ 5. Accesso un server PostgreSQL, con indirizzo IP e 2 utenze, una per il db ckan e l'altra per il datastore
  6. Accesso ad un server SOLR (almeno v6.6.6)
  7. Accesso ad un server REDIS (almeno v3.2.12)
 
@@ -14,7 +14,7 @@
 
 Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che abbia come gruppo primario ``ckan`` ed home directory ``/opt/opendata/ckan``. Se necessario fare riferimento all'utente e directory prescelta al momento dell'installazione.
 
-1. Clonare il repository ,creare il virtual environment python, attivarlo ed aggiornarlo
+1. Clonare il repository, creare il virtual environment python, attivarlo ed aggiornarlo
 
     Fare login come utente ```ckan```
 
@@ -77,7 +77,7 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 
 10. Configurare apache per usare il modulo wsgi compilato al punto 3 ed il virtualhost per ckan (necessario utente root)
 
-    Modificare il file ```/opt/opendata/ckan/ckan28-lazio/ckan28/etc/ckan28.wsgi``` scrivendo a riga 3 il path assoulto in uso.
+    Modificare il file ```/opt/opendata/ckan/ckan28-lazio/ckan28/etc/ckan28.wsgi``` scrivendo a riga 3 il path assoluto in uso.
 
     Commentare l'unica riga presente ed aggiungere ```LoadModule wsgi_module /opt/opendata/ckan/ckan28-lazio/ckan28/lib/python2.7/site-packages/mod_wsgi/server/mod_wsgi-py27.so``` al file  ```/etc/httpd/conf.d/wsgi.conf```.
 
@@ -198,9 +198,9 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 
 3. Configurare il virtualhost per il datapusher
 
-    Modifcare il file ```/opt/opendata/ckan/ckan28-lazio/datapusher/etc/datapusher.wsgi``` scrivendo a righe 5 e 9 il path assoulto in uso.
+    Modificare il file ```/opt/opendata/ckan/ckan28-lazio/datapusher/etc/datapusher.wsgi``` scrivendo a righe 5 e 9 il path assoluto in uso.
 
-    Modificare il file ```etc/httpd/conf.d/datapusher.conf``` sostiuendo percorsi e nome utente/gruppo giusti, ad esempio
+    Modificare il file ```etc/httpd/conf.d/datapusher.conf``` sostituendo percorsi e nome utente/gruppo giusti, ad esempio
 
     ```
     WSGIScriptAlias / /opt/opendata/ckan//ckan28-lazio/datapusher/etc/datapusher.wsgi
