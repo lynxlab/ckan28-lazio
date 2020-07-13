@@ -77,7 +77,7 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 
 10. Configurare apache per usare il modulo wsgi compilato al punto 3 ed il virtualhost per ckan (necessario utente root)
 
-    Modifcare il file ```/opt/opendata/ckan/ckan28-lazio/ckan28/etc/ckan28.wsgi``` scrivendo a riga 3 il path assoulto in uso.
+    Modificare il file ```/opt/opendata/ckan/ckan28-lazio/ckan28/etc/ckan28.wsgi``` scrivendo a riga 3 il path assoulto in uso.
 
     Commentare l'unica riga presente ed aggiungere ```LoadModule wsgi_module /opt/opendata/ckan/ckan28-lazio/ckan28/lib/python2.7/site-packages/mod_wsgi/server/mod_wsgi-py27.so``` al file  ```/etc/httpd/conf.d/wsgi.conf```.
 
