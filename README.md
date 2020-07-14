@@ -41,10 +41,9 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 
 3. Configurare il file ```etc/production.ini``` facendo massima attenzione alle credenziali di accesso ai DB, a tutte le url coinvolte (solr, redis, etc...) ed alle directory di filesystem necessarie (storage_path, files *.ini, etc...).
 
-
 4. Controllare e sistemare i permessi della directory dello storage (ckan.storage_path) e della cache (cache_dir) in modo che sia leggibile e scrivibile dall'utente di sistema ```ckan``` e/o dal gruppo di sistema ```ckan```
 
-5. Se necessario, creare un nuovo core di solr oppure usare quello esistente, in ogni caso copiare i files ```solr-config/solrconfig.xml``` e ```solr-config/schema.xml``` nella directory di configurazione del core di solr, da cui è necessario anche rinominare il file ```managed-schema``` in un nome a piacere, ad esempio ```managed-schema.disabled```
+5. Se necessario, creare un nuovo core di solr oppure usare quello esistente, in ogni caso copiare i files ```solr-config/solrconfig.xml``` e ```solr-config/schema.xml``` nella directory di configurazione del core di solr, da cui è necessario anche rinominare il file ```managed-schema``` in un nome a piacere, ad esempio ```managed-schema.disabled```. Se i file sono stati modificati o sovrascritti, riavviare SOLR.
 
 6. Eseguire l'aggiornamento del database ckan alla versione 2.8.4
 
@@ -83,7 +82,7 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 
     _Nota_: La posizione del file e/o la direttiva LoadModule wsgi_module potrebbero variare dipendentemente dall'installazione di apache.
 
-    Modificare il file ```etc/httpd/conf.d/mod_jk.conf``` sostiuendo percorsi e nome utente/gruppo giusti, ad esempio
+    Modificare il file ```etc/httpd/conf.d/mod_jk.conf``` (o il file dove è definito il VirutalHost per ckan) sostiuendo percorsi e nome utente/gruppo giusti, ad esempio
 
     ```
     WSGIScriptAlias /catalog /opt/opendata/ckan/ckan28-lazio/ckan28/etc/ckan28.wsgi
@@ -125,6 +124,8 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
 
 12. Creazione e popolazione tabelle plugin dcatapit
 
+    _Nota_: Se in questi comandi venisse restituito un errore simile a ```Exception TypeError: TypeError("'NoneType' object is not callable",) in <bound method Connection.__del__ of Connection<host=127.0.0.1,port=6379,db=0>> ignored```, può essere ignorato
+
     ```
     cd /opt/opendata/ckan/ckan28-lazio/ckan28/src/ckanext-dcatapit
 
@@ -165,6 +166,9 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
     python dbrepair_script.py map-themes commit
     ```
 
+    _Nota_: Il messaggio stampato dallo script ```FAILED 2: {'member': [], 'theme': [], 'extra': []}``` significa che gli elementi andati in errore degli oggetti member, theme ed extra sono vuoti: cioè non si è verificato nessun errore.
+
+
 14. Ottenere lo script sql per settare i permessi e creare procedure necessarie al datapusher
 
     ```
@@ -188,7 +192,7 @@ Nelle seguenti istruzioni si fa riferimento ad un utente di sistema ``ckan`` che
     pip install --upgrade pip
     pip install --upgrade setuptools wheel
     ```
-    **ATTENZIONE**: da questo punto in poi, per tutti i comandi di tipo pip, paster, python si assume che il virtual environment ckan28 sia stato attivato.
+    **ATTENZIONE**: da questo punto in poi, per tutti i comandi di tipo pip, paster, python si assume che il virtual environment datapusher sia stato attivato.
 
 2. Installare il datapusher
 
