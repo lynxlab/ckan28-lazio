@@ -4,7 +4,7 @@ cffi==1.14.0
 chardet==3.0.4
 ckanserviceprovider==0.0.8
 click==7.1.2
-cryptography==2.9.2
+cryptography==3.2
 -e git+https://github.com/ckan/datapusher.git@3926f14a5fd2143cfa005eede6588b35c4a07513#egg=datapusher
 enum34==1.1.10
 Flask==0.12.5
